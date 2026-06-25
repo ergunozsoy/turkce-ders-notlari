@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<!--
+  Türkçe Ders Notları — Türkisch 1–4
+  © 2026 Dr. Ergun Özsoy · LMU München. Tüm hakları saklıdır / Alle Rechte vorbehalten.
+  Yalnızca eğitim amaçlı kullanım içindir / Nur für Unterrichtszwecke.
+-->
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Türkçe Ders Notları · Türkisch 1–4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16233B; --petrol:#1F3864; --petrol-soft:#2C4F8A;
+  --orange:#ED7D31; --orange-deep:#C75B12;
+  --green-box:#E2EFDA; --green-line:#9DBE7A; --green-ink:#3D6B2E;
+  --beige-box:#FBF2E4; --beige-line:#E8C896;
+  --paper:#FAF8F3; --card:#FFFFFF; --line:#E8E2D6; --line-soft:#F0EBE0;
+  --muted:#6B7689; --good:#2E8B57; --bad:#C0392B;
+  --sidebar-w:312px;
+  --shadow-sm:0 1px 2px rgba(22,35,59,.06);
+  --shadow-md:0 6px 22px rgba(22,35,59,.10);
+  --shadow-lg:0 18px 50px rgba(22,35,59,.16);
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Inter",system-ui,-apple-system,sans-serif;
+  font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+::selection{background:rgba(237,125,49,.22)}
+a{color:var(--petrol-soft)}
+.mono{font-family:"Space Mono",ui-monospace,monospace}
+
+/* ---------- Layout ---------- */
+.app{display:grid; grid-template-columns:var(--sidebar-w) 1fr; min-height:100vh}
+
+/* ---------- Sidebar ---------- */
+.sidebar{
+  position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;
+  background:linear-gradient(180deg,#1B3158 0%,#16273F 100%); color:#EAF0FA;
+  border-right:1px solid rgba(0,0,0,.2); padding:0; z-index:40;
+}
+.sidebar::-webkit-scrollbar{width:8px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16); border-radius:8px}
+.brand{padding:22px 22px 16px; border-bottom:1px solid rgba(255,255,255,.10)}
+.brand h1{
+  font-family:"Fraunces",serif; font-weight:600; font-size:20px; margin:0;
+  letter-spacing:.2px; line-height:1.2;
+}
+.brand .sub{font-size:12.5px; color:#A9BBDA; margin-top:3px; letter-spacing:.04em; text-transform:uppercase}
+.brand .author{font-size:12px; color:#88A0C9; margin-top:9px}
+
+.searchwrap{padding:14px 18px 6px}
+.search{
+  width:100%; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06);
+  color:#fff; border-radius:10px; padding:9px 12px 9px 34px; font-size:13.5px; font-family:inherit;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' fill='none' stroke='%23A9BBDA' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:11px center;
+}
+.search::placeholder{color:#7E93BC}
+.search:focus{outline:2px solid var(--orange); outline-offset:1px; background:rgba(255,255,255,.10)}
+
+.nav{padding:6px 12px 30px}
+.nav-home{
+  display:flex; align-items:center; gap:9px; width:100%; text-align:left; cursor:pointer;
+  background:transparent; border:0; color:#DCE6F7; font-family:inherit; font-size:14px; font-weight:600;
+  padding:10px 12px; border-radius:9px; margin-bottom:6px;
+}
+.nav-home:hover{background:rgba(255,255,255,.07)}
+.nav-home.active{background:rgba(237,125,49,.16); color:#fff}
+
+.chap{margin-top:4px}
+.chap-head{
+  display:flex; align-items:center; gap:8px; width:100%; cursor:pointer; text-align:left;
+  background:transparent; border:0; color:#C4D2EC; font-family:inherit;
+  padding:9px 12px; border-radius:9px; font-size:11.5px; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase;
+}
+.chap-head:hover{background:rgba(255,255,255,.06); color:#fff}
+.chap-head .chev{margin-left:auto; transition:transform .2s; opacity:.7}
+.chap.open .chev{transform:rotate(90deg)}
+.chap-head .badge{
+  font-size:10px; background:rgba(255,255,255,.12); color:#cfe; padding:1px 7px;
+  border-radius:20px; font-weight:700; letter-spacing:0;
+}
+.topic-list{display:none; padding:2px 0 6px 8px; margin:0; list-style:none}
+.chap.open .topic-list{display:block}
+.topic-link{
+  display:flex; gap:9px; align-items:baseline; width:100%; text-align:left; cursor:pointer;
+  background:transparent; border:0; color:#AFC0E0; font-family:inherit; font-size:13px;
+  padding:7px 10px 7px 11px; border-radius:8px; line-height:1.35; position:relative;
+}
+.topic-link:hover{background:rgba(255,255,255,.06); color:#fff}
+.topic-link.active{background:rgba(237,125,49,.18); color:#fff}
+.topic-link.active::before{content:""; position:absolute; left:0; top:6px; bottom:6px; width:3px; background:var(--orange); border-radius:3px}
+.topic-link .tn{font-family:"Space Mono",monospace; font-size:11px; color:#7E93BC; flex:none; min-width:20px}
+.topic-link.done .tn::after{content:"✓"; color:var(--orange); margin-left:3px}
+
+/* ---------- Main ---------- */
+.main{min-width:0; display:flex; flex-direction:column}
+.topbar{
+  position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:14px;
+  padding:13px 30px; background:rgba(250,248,243,.85); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.hamb{display:none; background:none; border:0; cursor:pointer; padding:4px}
+.crumb{font-size:13px; color:var(--muted); font-weight:500; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.crumb b{color:var(--petrol)}
+.progress-pill{
+  margin-left:auto; display:flex; align-items:center; gap:10px; font-size:12.5px; color:var(--muted); font-weight:600;
+}
+.bar{width:120px; height:7px; background:#EDE7DA; border-radius:10px; overflow:hidden}
+.bar > i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--orange),#F0A45E); border-radius:10px; transition:width .5s ease}
+
+.content{padding:34px 30px 90px; max-width:880px; width:100%; margin:0 auto}
+
+/* ---------- Hero / Home ---------- */
+.hero{
+  background:linear-gradient(135deg,#1F3864 0%,#2C4F8A 100%); color:#fff;
+  border-radius:22px; padding:46px 44px 40px; position:relative; overflow:hidden;
+  box-shadow:var(--shadow-lg);
+}
+.hero::after{content:""; position:absolute; right:-80px; top:-80px; width:320px; height:320px;
+  background:radial-gradient(circle,rgba(237,125,49,.30),transparent 62%)}
+.hero .eyebrow{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#A9C0E8; font-weight:700}
+.hero h2{font-family:"Fraunces",serif; font-weight:600; font-size:40px; line-height:1.07; margin:14px 0 0; max-width:15ch}
+.hero p{color:#CFDDF2; font-size:16px; max-width:54ch; margin:16px 0 0}
+.build{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:26px; position:relative; z-index:2}
+.build .word{font-family:"Space Mono",monospace; font-size:20px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); padding:8px 14px; border-radius:11px; transition:.3s}
+.build .arrow{color:#7E93BC; font-size:18px}
+.chip{display:inline-block; background:var(--orange); color:#fff; border-radius:6px; padding:1px 6px; font-weight:700}
+.hero .stats{display:flex; gap:30px; margin-top:30px; position:relative; z-index:2; flex-wrap:wrap}
+.hero .stat b{font-family:"Fraunces",serif; font-size:30px; display:block; line-height:1}
+.hero .stat span{font-size:12.5px; color:#A9C0E8; letter-spacing:.03em}
+
+.section-title{font-family:"Fraunces",serif; font-weight:600; font-size:22px; margin:42px 0 6px; color:var(--petrol)}
+.section-sub{color:var(--muted); font-size:14px; margin:0 0 20px}
+
+.chapgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px}
+.chapcard{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:20px;
+  cursor:pointer; transition:.18s; box-shadow:var(--shadow-sm); position:relative; overflow:hidden;
+}
+.chapcard:hover{transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:var(--beige-line)}
+.chapcard .rn{font-family:"Fraunces",serif; font-size:13px; font-weight:700; color:var(--orange); letter-spacing:.12em}
+.chapcard h3{font-family:"Fraunces",serif; font-size:18px; margin:6px 0 4px; color:var(--petrol); line-height:1.2}
+.chapcard .meta{font-size:12.5px; color:var(--muted)}
+.chapcard .cbar{height:5px; background:#EFEADF; border-radius:6px; margin-top:14px; overflow:hidden}
+.chapcard .cbar > i{display:block; height:100%; background:var(--orange); width:0; transition:width .5s}
+
+.kindrow{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px}
+.kindcard{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:20px; cursor:pointer; transition:.18s; box-shadow:var(--shadow-sm)}
+.kindcard:hover{transform:translateY(-3px); box-shadow:var(--shadow-md)}
+.kindcard.giu{background:linear-gradient(135deg,#fff, #F4F8EF)}
+.kindcard.dia{background:linear-gradient(135deg,#fff,#FBF4E8)}
+.kindcard .ic{font-size:22px}
+.kindcard h3{font-family:"Fraunces",serif; margin:8px 0 4px; color:var(--petrol); font-size:18px}
+.kindcard p{margin:0; font-size:13px; color:var(--muted)}
+
+/* ---------- Lesson ---------- */
+.lesson-head{border-bottom:2px solid var(--line); padding-bottom:18px; margin-bottom:8px}
+.lesson-head .kicker{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); font-weight:700}
+.lesson-head h2{font-family:"Fraunces",serif; font-weight:600; font-size:31px; line-height:1.12; margin:8px 0 0; color:var(--petrol)}
+.lesson-head .topicnum{font-family:"Space Mono",monospace; color:var(--muted); font-size:13px}
+
+.block{margin-top:26px}
+.block > .label{
+  display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--petrol); margin-bottom:10px;
+}
+.block > .label .dot{width:7px; height:7px; border-radius:50%; background:var(--orange)}
+.prose p{margin:0 0 12px; font-size:15.5px; color:#28344B}
+
+table.rules{width:100%; border-collapse:collapse; font-size:14px; background:var(--card); border-radius:10px; overflow:hidden; box-shadow:var(--shadow-sm); border:1px solid var(--line)}
+table.rules th{background:var(--petrol); color:#fff; text-align:left; padding:10px 13px; font-weight:600; font-size:12.5px; letter-spacing:.02em}
+table.rules td{padding:9px 13px; border-top:1px solid var(--line-soft); vertical-align:top}
+table.rules tr:nth-child(even) td{background:#FBFAF6}
+table.rules td:first-child{font-weight:600; color:var(--petrol)}
+
+.note{
+  display:flex; gap:11px; background:var(--green-box); border:1px solid var(--green-line);
+  border-left:4px solid var(--green-line); border-radius:10px; padding:13px 16px; margin-top:16px; font-size:14.5px; color:#2C4A22;
+}
+.note .ic{flex:none; font-weight:700; color:var(--green-ink)}
+
+/* German explanation + Turkish subtext */
+.lang-tag{display:inline-flex; align-items:center; gap:5px; font-family:"Space Mono",monospace; font-size:10.5px; font-weight:700;
+  letter-spacing:.04em; padding:2px 7px; border-radius:5px; vertical-align:middle}
+.lang-tag.de{background:#1F3864; color:#fff}
+.lang-tag.tr{background:#EDE7DA; color:var(--petrol)}
+.prose.de p{font-size:15.5px; color:#27344B}
+.tr-sub{margin-top:12px; padding:11px 15px; background:#FBFAF6; border:1px solid var(--line); border-radius:10px}
+.tr-sub .tr-head{margin-bottom:5px}
+.tr-sub p{font-size:13.5px; color:var(--muted); margin:0 0 6px}
+.tr-sub p:last-child{margin-bottom:0}
+
+/* Contrast box: Unterschied zum Deutschen */
+.contrast{
+  display:flex; gap:13px; margin-top:16px; border-radius:12px; padding:14px 17px;
+  background:linear-gradient(180deg,#F1F5FC,#EAF0FA); border:1px solid #C7D6EE; border-left:4px solid var(--orange);
+}
+.contrast .cx-ic{flex:none; width:34px; height:34px; border-radius:9px; background:#fff; border:1px solid #C7D6EE;
+  display:flex; align-items:center; justify-content:center; font-size:15px}
+.contrast .cx-body{min-width:0}
+.contrast .cx-head{font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--petrol); margin-bottom:3px;
+  display:flex; align-items:center; gap:7px}
+.contrast .cx-head .flags{font-family:"Space Mono",monospace; font-size:10px; background:var(--orange); color:#fff; padding:1px 6px; border-radius:5px}
+.contrast .cx-text{font-size:14.5px; color:#2A3850; line-height:1.55}
+
+.examples{display:grid; gap:8px}
+.exrow{
+  background:var(--card); border:1px solid var(--line); border-radius:10px; padding:11px 15px;
+  font-size:15px; display:flex; gap:12px; align-items:baseline; box-shadow:var(--shadow-sm);
+}
+.exrow .tr{font-weight:500; color:var(--ink)}
+.exrow .de{color:var(--muted); font-size:13.5px; font-style:italic; margin-left:auto; text-align:right}
+
+/* ---------- Exercises ---------- */
+.exercise{background:var(--beige-box); border:1px solid var(--beige-line); border-radius:var(--r); padding:22px 22px 20px; margin-top:18px}
+.exercise .ex-label{display:flex; align-items:center; gap:9px; font-family:"Fraunces",serif; font-size:17px; color:var(--orange-deep); font-weight:600; margin-bottom:4px}
+.exercise .ex-instr{font-size:13.5px; color:#7A6A4E; margin:0 0 16px; font-style:italic}
+
+.q{margin-bottom:14px}
+.q .qtext{font-size:15px; margin-bottom:7px; display:flex; gap:9px}
+.q .qtext .qn{font-family:"Space Mono",monospace; color:var(--orange-deep); font-weight:700; flex:none}
+.q .blank{display:inline-block; min-width:90px; border-bottom:2px solid var(--orange); margin:0 3px}
+.fillinput{
+  font-family:inherit; font-size:14.5px; padding:8px 12px; border:1.5px solid var(--beige-line);
+  border-radius:9px; background:#fff; width:min(320px,100%); color:var(--ink); transition:.15s;
+}
+.fillinput:focus{outline:none; border-color:var(--orange); box-shadow:0 0 0 3px rgba(237,125,49,.16)}
+.fillinput.correct{border-color:var(--good); background:#F1FAF4}
+.fillinput.wrong{border-color:var(--bad); background:#FDF2F1}
+.fb{font-size:12.5px; margin-top:5px; font-weight:600; min-height:0}
+.fb.ok{color:var(--good)} .fb.no{color:var(--bad)}
+.fb .corr{color:var(--petrol); font-weight:600}
+
+.ex-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; align-items:center}
+.btn{
+  font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; border-radius:10px;
+  padding:9px 18px; border:1.5px solid transparent; transition:.15s;
+}
+.btn.primary{background:var(--orange); color:#fff; box-shadow:0 2px 8px rgba(237,125,49,.3)}
+.btn.primary:hover{background:var(--orange-deep)}
+.btn.ghost{background:transparent; color:var(--petrol); border-color:var(--line)}
+.btn.ghost:hover{background:#fff; border-color:var(--petrol)}
+.score{font-size:13.5px; font-weight:700; color:var(--green-ink); margin-left:auto}
+
+/* matching */
+.match{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:4px}
+.mcol{display:flex; flex-direction:column; gap:8px}
+.mcol .ch{font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:700; margin-bottom:2px}
+.mitem{
+  background:#fff; border:1.5px solid var(--beige-line); border-radius:9px; padding:10px 13px; cursor:pointer;
+  font-size:14px; transition:.13s; position:relative; user-select:none;
+}
+.mitem:hover{border-color:var(--orange)}
+.mitem.sel{border-color:var(--orange); background:#FFF6EC; box-shadow:0 0 0 3px rgba(237,125,49,.15)}
+.mitem.matched{border-color:var(--good); background:#F1FAF4; cursor:default}
+.mitem.matched::after{content:attr(data-tag); position:absolute; right:9px; top:50%; transform:translateY(-50%);
+  font-family:"Space Mono",monospace; font-size:11px; font-weight:700; color:var(--good)}
+.mitem.wrongflash{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* answer reveal */
+.answers{margin-top:14px; border:1px dashed var(--beige-line); border-radius:10px; overflow:hidden}
+.answers summary{cursor:pointer; padding:11px 16px; font-size:13.5px; font-weight:600; color:var(--orange-deep); list-style:none; background:#FFFBF4}
+.answers summary::-webkit-details-marker{display:none}
+.answers summary::before{content:"▸ "; }
+.answers[open] summary::before{content:"▾ "}
+.answers .akey{padding:6px 18px 16px}
+.answers .akey h5{margin:12px 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--petrol)}
+.answers ol{margin:0; padding-left:22px; font-size:14px; color:#36425A}
+.answers ol li{margin:3px 0}
+
+/* lesson footer nav */
+.lnav{display:flex; justify-content:space-between; gap:14px; margin-top:42px; padding-top:22px; border-top:1px solid var(--line)}
+.lnav button{
+  background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 18px; cursor:pointer;
+  font-family:inherit; text-align:left; max-width:46%; transition:.15s; box-shadow:var(--shadow-sm);
+}
+.lnav button:hover:not(:disabled){border-color:var(--orange); transform:translateY(-2px)}
+.lnav button:disabled{opacity:.4; cursor:default}
+.lnav .dir{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700}
+.lnav .tt{font-size:14px; color:var(--petrol); font-weight:600; display:block; margin-top:3px}
+.lnav .next{text-align:right; margin-left:auto}
+.markdone{display:flex; justify-content:center; margin-top:26px}
+
+/* GIU rule cards */
+.gcard{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-top:12px; box-shadow:var(--shadow-sm)}
+.gcard.rule{border-left:4px solid var(--orange); background:linear-gradient(180deg,#FFFCF7,#fff)}
+.gcard.rule .k{display:inline-flex; width:24px; height:24px; align-items:center; justify-content:center; background:var(--orange); color:#fff; border-radius:7px; font-weight:700; font-family:"Space Mono",monospace; font-size:13px; margin-right:8px}
+.gline.p{margin:9px 2px; font-size:15px; color:#2A3850}
+.gline.i{margin:9px 2px; font-size:14px; color:var(--muted); font-style:italic}
+.gline.li{margin:5px 2px 5px 18px; font-size:14.5px; position:relative}
+.gline.li::before{content:"•"; color:var(--orange); position:absolute; left:-14px; font-weight:700}
+.gline.h{font-family:"Fraunces",serif; font-weight:600; color:var(--petrol); font-size:16px; margin:18px 0 4px}
+
+/* dialog */
+.dia-pattern{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:6px 0; margin-top:14px; box-shadow:var(--shadow-sm); overflow:hidden}
+.dia-pattern .ph{background:#F4F8EF; border-bottom:1px solid var(--green-line); padding:11px 18px; font-family:"Fraunces",serif; font-weight:600; color:var(--green-ink); font-size:15.5px}
+.dia-body{padding:6px 18px 14px}
+.bubble{margin:8px 0; font-size:15px}
+.bubble.a{color:var(--petrol); font-weight:600}
+.bubble.b{color:#3A4861; padding-left:16px}
+.bubble.b::before{content:"— "; color:var(--orange)}
+.bubble.de{color:var(--muted); font-style:italic; font-size:13.5px}
+
+/* empty / search states */
+.empty{text-align:center; padding:60px 20px; color:var(--muted)}
+
+/* copyright footer */
+.copyright{margin-top:48px; padding:26px 28px; background:var(--card); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow-sm)}
+.copyright .ctop{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.copyright .cmark{font-family:"Fraunces",serif; font-weight:600; color:var(--petrol); font-size:16px}
+.copyright .crights{font-size:12.5px; color:var(--muted)}
+.copyright .cusage{display:inline-block; margin-top:4px; font-size:12px; color:var(--orange-deep); font-weight:600}
+.copyright .cdiv{height:1px; background:var(--line-soft); margin:14px 0}
+.copyright .csrc-h{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--petrol); font-weight:700; margin-bottom:6px}
+.copyright ul{margin:0; padding-left:18px; font-size:12.5px; color:var(--muted)}
+.copyright ul li{margin:2px 0}
+.copyright .cnote{font-size:11.5px; color:#9AA3B2; margin-top:12px; line-height:1.5}
+.side-copyright{margin:14px 14px 22px; padding:11px 13px; border-top:1px solid rgba(255,255,255,.10); color:#7E93BC; font-size:11px; line-height:1.5}
+.side-copyright b{color:#AFC0E0; font-weight:600}
+
+/* mobile */
+.scrim{display:none}
+@media (max-width:920px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed; left:0; top:0; bottom:0; width:300px; transform:translateX(-100%); transition:transform .25s; box-shadow:var(--shadow-lg)}
+  body.nav-open .sidebar{transform:none}
+  body.nav-open .scrim{display:block; position:fixed; inset:0; background:rgba(10,18,32,.45); z-index:35}
+  .hamb{display:block}
+  .content{padding:24px 18px 80px}
+  .hero{padding:32px 24px}
+  .hero h2{font-size:30px}
+  .match{grid-template-columns:1fr 1fr; gap:12px}
+  .kindrow{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <h1>Türkçe Ders Notları</h1>
+      <div class="sub">Türkisch 1 – 4</div>
+      <div class="author">Dr. Ergun Özsoy · LMU München</div>
+    </div>
+    <div class="searchwrap">
+      <input class="search" id="search" type="search" placeholder="Konu ara… (örn. iyelik, geçmiş)" aria-label="Konu ara">
+    </div>
+    <nav class="nav" id="nav"></nav>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="hamb" id="hamb" aria-label="Menü">
+        <svg width="24" height="24" fill="none" stroke="#1F3864" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="crumb" id="crumb">Ana Sayfa</div>
+      <div class="progress-pill">
+        <span id="progtext">%0</span>
+        <div class="bar"><i id="progbar"></i></div>
+      </div>
+    </header>
+    <main class="content" id="content"></main>
+  </div>
+</div>
+
+<script>
+/*__DATA__*/
+</script>
+<script>
+/* ============ STATE & STORAGE ============ */
+const store = (()=>{
+  let mem={};
+  try{ const t=localStorage.getItem('tdn_progress'); if(t) mem=JSON.parse(t); }
+  catch(e){ mem={}; }
+  return {
+    get done(){ return mem.done||{}; },
+    isDone(id){ return !!(mem.done&&mem.done[id]); },
+    setDone(id,v){ mem.done=mem.done||{}; if(v) mem.done[id]=1; else delete mem.done[id]; save(); },
+    _mem:()=>mem
+  };
+  function save(){ try{ localStorage.setItem('tdn_progress',JSON.stringify(mem)); }catch(e){} }
+})();
+
+const D = window.DATA;
+if(!D || !D.chapters){
+  const c=document.getElementById('content');
+  if(c) c.innerHTML='<div class="empty"><h2 style="font-family:Fraunces,serif;color:#1F3864">Bu dosya yalnızca şablon</h2>'+
+    '<p>Bu <b>app_template.html</b> derleme şablonudur ve içeriği gömülü değildir.<br>'+
+    'Çalışan uygulama için <b>index.html</b> dosyasını açın.</p></div>';
+  throw new Error('Şablon önizlemesi: içerik index.html içinde gömülüdür.');
+}
+// flatten topics with stable keys
+const TOPICS=[];
+D.chapters.forEach(c=>c.topics.forEach(t=>TOPICS.push(Object.assign({key:'k'+t.id, chapNum:c.num, chapTitle:c.title},t))));
+D.giu.sections.forEach((g,i)=>g.key='giu'+i);
+D.dialogs.forEach((d,i)=>d.key='dia'+i);
+
+let current=null; // {type, ...}
+
+/* ============ HELPERS ============ */
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function normalize(s){
+  return (s||'').toLocaleLowerCase('tr-TR').trim().replace(/\s+/g,' ').replace(/[.,;!?'""’]/g,'');
+}
+
+/* ============ SIDEBAR NAV ============ */
+function buildNav(){
+  const nav=document.getElementById('nav');
+  let h=`<button class="nav-home" data-home>
+    <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>
+    Ana Sayfa</button>`;
+  D.chapters.forEach(c=>{
+    const done=c.topics.filter(t=>store.isDone('k'+t.id)).length;
+    h+=`<div class="chap" data-chap="${c.num}">
+      <button class="chap-head"><span>Bölüm ${c.num}</span><span class="badge">${done}/${c.topics.length}</span>
+      <svg class="chev" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      <ul class="topic-list">`;
+    c.topics.forEach(t=>{
+      h+=`<li><button class="topic-link ${store.isDone('k'+t.id)?'done':''}" data-topic="${t.id}">
+        <span class="tn">${t.id}</span><span>${esc(t.title)}</span></button></li>`;
+    });
+    h+=`</ul></div>`;
+  });
+  // GIU group
+  h+=`<div class="chap" data-chap="V"><button class="chap-head"><span>Bölüm V · Grammar in Use</span>
+    <span class="badge">${D.giu.sections.length}</span>
+    <svg class="chev" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button><ul class="topic-list">`;
+  D.giu.sections.forEach((g,i)=>{ h+=`<li><button class="topic-link" data-giu="${i}"><span class="tn">G${i+1}</span><span>${esc(g.title)}</span></button></li>`; });
+  h+=`</ul></div>`;
+  // Dialogs
+  h+=`<div class="chap" data-chap="VI"><button class="chap-head"><span>Bölüm VI · Diyaloglar</span>
+    <span class="badge">${D.dialogs.length}</span>
+    <svg class="chev" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button><ul class="topic-list">`;
+  D.dialogs.forEach((d,i)=>{ h+=`<li><button class="topic-link" data-dia="${i}"><span class="tn">D${i+1}</span><span>${esc(d.title.replace(/^VI\.\d+\s*—\s*/,''))}</span></button></li>`; });
+  h+=`</ul></div>`;
+  nav.innerHTML=h;
+  // persistent copyright in sidebar
+  const m=D.meta;
+  const sc=document.createElement('div');
+  sc.className='side-copyright';
+  sc.innerHTML=`<b>${esc(m.copyright||'')}</b><br>${esc(m.rights||'')}<br>${esc(m.usage||'')}`;
+  nav.appendChild(sc);
+  nav.querySelector('[data-home]').onclick=()=>goHome();
+  nav.querySelectorAll('.chap-head').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+  nav.querySelectorAll('[data-topic]').forEach(b=>b.onclick=()=>openTopic(+b.dataset.topic));
+  nav.querySelectorAll('[data-giu]').forEach(b=>b.onclick=()=>openGiu(+b.dataset.giu));
+  nav.querySelectorAll('[data-dia]').forEach(b=>b.onclick=()=>openDia(+b.dataset.dia));
+}
+
+function highlightNav(){
+  document.querySelectorAll('.topic-link,.nav-home').forEach(b=>b.classList.remove('active'));
+  if(!current){ document.querySelector('[data-home]')?.classList.add('active'); return; }
+  let sel=null;
+  if(current.type==='topic') sel=document.querySelector(`[data-topic="${current.id}"]`);
+  if(current.type==='giu') sel=document.querySelector(`[data-giu="${current.i}"]`);
+  if(current.type==='dia') sel=document.querySelector(`[data-dia="${current.i}"]`);
+  if(sel){ sel.classList.add('active'); sel.closest('.chap')?.classList.add('open'); }
+}
+
+/* ============ PROGRESS ============ */
+function updateProgress(){
+  const total=TOPICS.length;
+  const done=TOPICS.filter(t=>store.isDone(t.key)).length;
+  const pct=Math.round(done/total*100);
+  document.getElementById('progbar').style.width=pct+'%';
+  document.getElementById('progtext').textContent='%'+pct;
+}
+
+/* ============ HOME ============ */
+function goHome(){
+  current=null;
+  document.getElementById('crumb').innerHTML='Ana Sayfa';
+  const total=TOPICS.length, done=TOPICS.filter(t=>store.isDone(t.key)).length;
+  let h=`<section class="hero">
+    <div class="eyebrow">Sistematik Türkçe Dilbilgisi · A1 → B1</div>
+    <h2>Bağlam içinde öğren, ekleri yerine oturt.</h2>
+    <p>Dr. Ergun Özsoy'un Türkisch 1–4 ders notlarından derlenen tam dijital çalışma kitabı. Her konu: açıklama, kural tablosu, örnekler ve <b>interaktif alıştırmalar</b>.</p>
+    <div class="build">
+      <span class="word">ev</span><span class="arrow">→</span>
+      <span class="word">ev<span class="chip">ler</span></span><span class="arrow">→</span>
+      <span class="word">ev<span class="chip">ler</span><span class="chip">im</span></span><span class="arrow">→</span>
+      <span class="word">ev<span class="chip">ler</span><span class="chip">im</span><span class="chip">de</span></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>50</b><span>Dilbilgisi konusu</span></div>
+      <div class="stat"><b>7</b><span>Grammar in Use</span></div>
+      <div class="stat"><b>4</b><span>Diyalog seviyesi</span></div>
+      <div class="stat"><b>%${Math.round(done/total*100)}</b><span>Tamamlandı</span></div>
+    </div>
+  </section>`;
+
+  h+=`<h3 class="section-title">Bölümler</h3>
+      <p class="section-sub">Temel yapılardan ileri dilbilgisine doğru sırayla ilerleyin.</p>
+      <div class="chapgrid">`;
+  const subt={'I':'Temel Yapılar · Türkçe 1','II':'Hâl Ekleri ve Edatlar · Türkçe 2','III':'Zamanlar ve Bağlaçlar · Türkçe 3','IV':'İleri Yapılar · Türkçe 4'};
+  D.chapters.forEach(c=>{
+    const cd=c.topics.filter(t=>store.isDone('k'+t.id)).length;
+    const pct=Math.round(cd/c.topics.length*100);
+    h+=`<div class="chapcard" data-open-chap="${c.num}">
+      <div class="rn">BÖLÜM ${c.num}</div>
+      <h3>${esc(subt[c.num]||c.title)}</h3>
+      <div class="meta">${c.topics.length} konu · ${cd} tamamlandı</div>
+      <div class="cbar"><i style="width:${pct}%"></i></div>
+    </div>`;
+  });
+  h+=`</div>`;
+
+  h+=`<h3 class="section-title">Derinlemesine</h3>
+      <p class="section-sub">Kuralı ezberlemek yerine bağlamda sezdiren ek bölümler.</p>
+      <div class="kindrow">
+        <div class="kindcard giu" data-open-giu="0"><div class="ic">📘</div><h3>Grammar in Use</h3><p>7 zaman ve kipin senaryolu, kullanım odaklı incelemesi.</p></div>
+        <div class="kindcard dia" data-open-dia="0"><div class="ic">💬</div><h3>Pratik Diyaloglar</h3><p>Tanışmadan ileri anlatıma 4 seviyede günlük konuşma kalıpları.</p></div>
+      </div>`;
+
+  // copyright footer
+  const m=D.meta;
+  h+=`<footer class="copyright">
+    <div class="ctop">
+      <span class="cmark">${esc(m.copyright||'')}</span>
+      <span class="crights">· ${esc(m.rights||'')}</span>
+    </div>
+    <div class="cusage">${esc(m.usage||'')}</div>
+    <div class="cdiv"></div>
+    <div class="csrc-h">Kaynaklar · Quellen</div>
+    <ul>${(m.sources||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ul>
+    <div class="cnote">${esc(m.institution||'')}. Bu materyalin içeriği telif hakkıyla korunmaktadır; yazılı izin olmadan çoğaltılamaz veya ticari amaçla kullanılamaz. — Diese Materialien sind urheberrechtlich geschützt.</div>
+  </footer>`;
+
+  document.getElementById('content').innerHTML=h;
+  document.querySelectorAll('[data-open-chap]').forEach(el=>el.onclick=()=>{
+    const c=D.chapters.find(x=>x.num===el.dataset.openChap); if(c) openTopic(c.topics[0].id);
+  });
+  document.querySelector('[data-open-giu]').onclick=()=>openGiu(0);
+  document.querySelector('[data-open-dia]').onclick=()=>openDia(0);
+  highlightNav(); updateProgress(); window.scrollTo(0,0);
+}
+
+/* ============ RENDER TABLE ============ */
+function renderTable(tbl){
+  if(!tbl||!tbl.rows) return '';
+  let h='<table class="rules"><thead><tr>';
+  tbl.headers.forEach(x=>h+=`<th>${esc(x)}</th>`); h+='</tr></thead><tbody>';
+  tbl.rows.forEach(r=>{ h+='<tr>'; r.forEach(c=>h+=`<td>${esc(c)}</td>`); h+='</tr>'; });
+  return h+'</tbody></table>';
+}
+
+/* ============ TOPIC VIEW ============ */
+function openTopic(id){
+  const t=TOPICS.find(x=>x.id===id); if(!t) return;
+  current={type:'topic', id};
+  document.getElementById('crumb').innerHTML=`Bölüm ${t.chapNum} · <b>Konu ${t.id}</b>`;
+  let h=`<div class="lesson-head">
+    <div class="kicker">Bölüm ${t.chapNum} — Konu ${t.id}</div>
+    <h2>${esc(t.title)}</h2>
+  </div>`;
+
+  if((t.de&&t.de.length)||(t.aciklama&&t.aciklama.length)){
+    h+=`<div class="block"><span class="label"><span class="dot"></span>Erklärung · Açıklama</span>`;
+    if(t.de&&t.de.length){
+      h+=`<div class="prose de">`;
+      t.de.forEach(p=>h+=`<p>${esc(p)}</p>`);
+      h+=`</div>`;
+    }
+    if(t.aciklama&&t.aciklama.length){
+      h+=`<div class="tr-sub"><div class="tr-head"><span class="lang-tag tr">TR · Türkçe</span></div>`;
+      t.aciklama.forEach(p=>h+=`<p>${esc(p)}</p>`);
+      h+=`</div>`;
+    }
+    if(t.diff){
+      h+=`<div class="contrast"><div class="cx-ic">⇄</div><div class="cx-body">
+        <div class="cx-head"><span class="flags">DE ⇄ TR</span> Unterschied zum Deutschen</div>
+        <div class="cx-text">${esc(t.diff)}</div></div></div>`;
+    }
+    h+=`</div>`;
+  }
+  if(t.kurallar){
+    h+=`<div class="block"><span class="label"><span class="dot"></span>Kurallar</span>`;
+    if(t.kurallar.text) t.kurallar.text.forEach(x=>{ if(x) h+=`<p class="prose">${esc(x)}</p>`; });
+    if(t.kurallar.table) h+=renderTable(t.kurallar.table);
+    if(t.kurallar.note) h+=`<div class="note"><span class="ic">!</span><div>${esc(t.kurallar.note)}</div></div>`;
+    h+=`</div>`;
+  }
+  if(t.ornekler&&t.ornekler.length){
+    h+=`<div class="block"><span class="label"><span class="dot"></span>Örnekler</span><div class="examples">`;
+    t.ornekler.forEach(e=>{
+      let tr=e, de='';
+      const m=e.split(/\s+–\s+|\s+—\s+/);
+      if(m.length>1 && /[A-ZÄÖÜ]/.test(m[m.length-1][0]||'')){ de=m.pop(); tr=m.join(' – '); }
+      h+=`<div class="exrow"><span class="tr">${esc(tr.replace(/^•\s*/,''))}</span>${de?`<span class="de">${esc(de)}</span>`:''}</div>`;
+    });
+    h+=`</div></div>`;
+  }
+
+  // Exercise 1: fill in
+  const a1=t.alistirma1;
+  if(a1&&a1.questions.length){
+    h+=`<div class="exercise" data-ex1>
+      <div class="ex-label">✎ Alıştırma 1 — Boşluk Doldurma</div>
+      <p class="ex-instr">${esc(a1.instruction||'Boşlukları uygun ek veya kelimelerle doldurun.')}</p>`;
+    a1.questions.forEach((q,i)=>{
+      const html=esc(q).replace(/_{2,}/g,'<span class="blank"></span>');
+      h+=`<div class="q">
+        <div class="qtext"><span class="qn">${i+1}.</span><span>${html}</span></div>
+        <input class="fillinput" data-fi="${i}" type="text" autocomplete="off" placeholder="cevabınız…">
+        <div class="fb" data-fb="${i}"></div>
+      </div>`;
+    });
+    h+=`<div class="ex-actions">
+      <button class="btn primary" data-check1>Kontrol Et</button>
+      <button class="btn ghost" data-reveal1>Cevapları Göster</button>
+      <span class="score" data-score1></span>
+    </div>`;
+    h+=`<details class="answers"><summary>Cevap Anahtarı — Alıştırma 1</summary><div class="akey"><ol>`;
+    (t.cevap1||[]).forEach(a=>h+=`<li>${esc(a)}</li>`); h+=`</ol></div></details></div>`;
+  }
+
+  // Exercise 2: matching
+  const a2=t.alistirma2;
+  if(a2&&a2.pairs.length){
+    h+=`<div class="exercise" data-ex2>
+      <div class="ex-label">⇄ Alıştırma 2 — Eşleştirme</div>
+      <p class="ex-instr">${esc(a2.instruction||'Soldaki ifadeleri sağdaki karşılıklarıyla eşleştirin. Önce soldan, sonra sağdan seçin.')}</p>
+      <div class="match">
+        <div class="mcol"><div class="ch">${esc(a2.headers[0]||'A')}</div>${a2.pairs.map((p,i)=>`<div class="mitem" data-left="${i}">${esc(p[0])}</div>`).join('')}</div>
+        <div class="mcol"><div class="ch">${esc(a2.headers[1]||'B')}</div>${shuffle(a2.pairs.map((p,i)=>({i,v:p[1]}))).map(o=>`<div class="mitem" data-right="${o.i}">${esc(o.v)}</div>`).join('')}</div>
+      </div>
+      <div class="ex-actions"><button class="btn ghost" data-resetm>Sıfırla</button><span class="score" data-scorem></span></div>
+      <details class="answers"><summary>Cevap Anahtarı — Alıştırma 2</summary><div class="akey"><ol>${(t.cevap2||[]).map(a=>`<li>${esc(a)}</li>`).join('')}</ol></div></details>
+    </div>`;
+  }
+
+  // mark done + footer nav
+  const done=store.isDone(t.key);
+  h+=`<div class="markdone"><button class="btn ${done?'ghost':'primary'}" data-markdone>${done?'✓ Tamamlandı — geri al':'Konuyu tamamlandı olarak işaretle'}</button></div>`;
+  const idx=TOPICS.findIndex(x=>x.id===id);
+  const prev=TOPICS[idx-1], next=TOPICS[idx+1];
+  h+=`<div class="lnav">
+    ${prev?`<button data-go="${prev.id}"><span class="dir">← Önceki</span><span class="tt">${esc(prev.title)}</span></button>`:'<button disabled><span class="dir">← Önceki</span><span class="tt">—</span></button>'}
+    ${next?`<button class="next" data-go="${next.id}"><span class="dir">Sonraki →</span><span class="tt">${esc(next.title)}</span></button>`:'<button class="next" disabled><span class="dir">Sonraki →</span><span class="tt">—</span></button>'}
+  </div>`;
+
+  const c=document.getElementById('content'); c.innerHTML=h;
+  wireTopic(t);
+  highlightNav(); window.scrollTo(0,0); closeNavMobile();
+}
+
+function wireTopic(t){
+  const c=document.getElementById('content');
+  // fill-in check
+  const check=c.querySelector('[data-check1]');
+  if(check){
+    const ans=t.cevap1||[];
+    const grade=()=>{
+      let ok=0,total=0;
+      c.querySelectorAll('[data-fi]').forEach(inp=>{
+        const i=+inp.dataset.fi; const fb=c.querySelector(`[data-fb="${i}"]`);
+        const correct=ans[i]||''; total++;
+        const acc=extractAccepted(correct);
+        const val=normalize(inp.value);
+        if(!val){ inp.className='fillinput'; fb.className='fb'; fb.textContent=''; total--; return; }
+        const good=acc.some(a=>normalize(a)===val) || acc.some(a=>normalize(a).includes(val)&&val.length>2&&normalize(a).split(' ').includes(val));
+        if(good){ inp.className='fillinput correct'; fb.className='fb ok'; fb.textContent='✓ Doğru'; ok++; }
+        else{ inp.className='fillinput wrong'; fb.className='fb no'; fb.innerHTML=`✗ Tekrar dene · <span class="corr">${esc(correct)}</span>`; }
+      });
+      const s=c.querySelector('[data-score1]'); s.textContent= total? `${ok}/${total} doğru`:'';
+      if(total&&ok===total) maybeAutoDone(t);
+    };
+    check.onclick=grade;
+    c.querySelectorAll('[data-fi]').forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter')grade();}));
+  }
+  const rev=c.querySelector('[data-reveal1]');
+  if(rev) rev.onclick=()=>{
+    const ans=t.cevap1||[];
+    c.querySelectorAll('[data-fi]').forEach(inp=>{ const i=+inp.dataset.fi; inp.value=stripAnswer(ans[i]||''); });
+    c.querySelector('[data-check1]').click();
+  };
+  // matching
+  wireMatch(c,t);
+  // mark done
+  c.querySelector('[data-markdone]').onclick=()=>{
+    store.setDone(t.key,!store.isDone(t.key)); openTopic(t.id); buildNav(); highlightNav(); updateProgress();
+  };
+  c.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>openTopic(+b.dataset.go));
+}
+
+function extractAccepted(s){
+  // answer cells like "8 (a, e, ı...)" or "geliyorum" or "Q, W, X" or "dsch / dş"
+  let base=s.split('(')[0];
+  let parts=base.split(/\s*\/\s*/);
+  return parts.map(p=>p.trim()).filter(Boolean).concat([s.trim()]);
+}
+function stripAnswer(s){ return s.split('(')[0].split('/')[0].trim(); }
+
+function wireMatch(c,t){
+  const wrap=c.querySelector('[data-ex2]'); if(!wrap) return;
+  let sel=null; let matched=0; const total=(t.alistirma2.pairs||[]).length;
+  const lefts=wrap.querySelectorAll('[data-left]'), rights=wrap.querySelectorAll('[data-right]');
+  const score=wrap.querySelector('[data-scorem]');
+  let tagN=0;
+  function clear(){ sel=null; wrap.querySelectorAll('.mitem.sel').forEach(x=>x.classList.remove('sel')); }
+  function clickItem(el,side){
+    if(el.classList.contains('matched')) return;
+    if(!sel){ clear(); sel={el,side}; el.classList.add('sel'); return; }
+    if(sel.side===side){ clear(); sel={el,side}; el.classList.add('sel'); return; }
+    const left = side==='L'? el : sel.el;
+    const right= side==='R'? el : sel.el;
+    if(left.dataset.left===right.dataset.right){
+      tagN++; [left,right].forEach(x=>{x.classList.remove('sel'); x.classList.add('matched'); x.dataset.tag='✓';});
+      matched++; score.textContent=`${matched}/${total} eşleşti`;
+      if(matched===total){ score.textContent=`✓ Tümü doğru (${total}/${total})`; maybeAutoDone(t); }
+      sel=null;
+    } else {
+      [left,right].forEach(x=>{x.classList.add('wrongflash'); setTimeout(()=>x.classList.remove('wrongflash'),360);});
+      clear();
+    }
+  }
+  lefts.forEach(el=>el.onclick=()=>clickItem(el,'L'));
+  rights.forEach(el=>el.onclick=()=>clickItem(el,'R'));
+  wrap.querySelector('[data-resetm]').onclick=()=>{
+    matched=0; score.textContent=''; clear();
+    wrap.querySelectorAll('.mitem').forEach(x=>{x.classList.remove('matched','sel'); x.removeAttribute('data-tag');});
+  };
+}
+let _autoDoneTimer=null;
+function maybeAutoDone(t){
+  // if both exercises satisfied, gently suggest by toggling done automatically once
+  // (kept manual to respect user control — no auto-mark)
+}
+
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* ============ GIU VIEW ============ */
+function renderItems(items){
+  let h='';
+  items.forEach(it=>{
+    if(it.t==='table'){ h+=renderTable({headers:it.headers,rows:it.rows}); }
+    else if(it.t==='rule'){ h+=`<div class="gcard rule"><span class="k">${esc(it.k)}</span>${esc(it.text)}</div>`; }
+    else if(it.t==='h'){ h+=`<div class="gline h">${esc(it.text)}</div>`; }
+    else if(it.t==='li'){ h+=`<div class="gline li">${esc(it.text)}</div>`; }
+    else if(it.t==='i'){ h+=`<div class="gline i">${esc(it.text)}</div>`; }
+    else { h+=`<div class="gline p">${esc(it.text)}</div>`; }
+  });
+  return h;
+}
+function openGiu(i){
+  const g=D.giu.sections[i]; if(!g) return; current={type:'giu',i};
+  document.getElementById('crumb').innerHTML=`Bölüm V · <b>${esc(g.title)}</b>`;
+  let h=`<div class="lesson-head"><div class="kicker">Grammar in Use · ${i+1}/${D.giu.sections.length}</div><h2>${esc(g.title)}</h2></div>
+    <div class="block"><div class="prose" style="margin-top:8px">${renderItems(g.items)}</div></div>`;
+  const prev=D.giu.sections[i-1], next=D.giu.sections[i+1];
+  h+=`<div class="lnav">
+    ${i>0?`<button data-gg="${i-1}"><span class="dir">← Önceki</span><span class="tt">${esc(prev.title)}</span></button>`:'<button disabled><span class="dir">←</span><span class="tt">—</span></button>'}
+    ${next?`<button class="next" data-gg="${i+1}"><span class="dir">Sonraki →</span><span class="tt">${esc(next.title)}</span></button>`:'<button class="next" disabled><span class="dir">→</span><span class="tt">—</span></button>'}
+  </div>`;
+  const c=document.getElementById('content'); c.innerHTML=h;
+  c.querySelectorAll('[data-gg]').forEach(b=>b.onclick=()=>openGiu(+b.dataset.gg));
+  highlightNav(); window.scrollTo(0,0); closeNavMobile();
+}
+
+/* ============ DIALOG VIEW ============ */
+function openDia(i){
+  const d=D.dialogs[i]; if(!d) return; current={type:'dia',i};
+  const clean=d.title.replace(/^VI\.\d+\s*—\s*/,'');
+  document.getElementById('crumb').innerHTML=`Bölüm VI · <b>${esc(clean)}</b>`;
+  let h=`<div class="lesson-head"><div class="kicker">Pratik Diyaloglar · Seviye ${i+1}</div><h2>${esc(clean)}</h2></div>`;
+  // group items into patterns by 'h' headings that look like "Kalıp N"
+  let cur=null; const blocks=[];
+  d.items.forEach(it=>{
+    if(it.t==='h' && /Kalıp/i.test(it.text)){ cur={title:it.text, items:[]}; blocks.push(cur); }
+    else if(cur){ cur.items.push(it); }
+    else { (blocks._pre=blocks._pre||[]).push(it); }
+  });
+  if(blocks._pre){ h+=`<div class="block"><div class="prose">${renderItems(blocks._pre)}</div></div>`; }
+  blocks.forEach(b=>{
+    h+=`<div class="dia-pattern"><div class="ph">${esc(b.title)}</div><div class="dia-body">`;
+    b.items.forEach(it=>{
+      if(it.t==='table'){ h+=renderTable({headers:it.headers,rows:it.rows}); }
+      else if(it.t==='i'){ h+=`<div class="bubble de">${esc(it.text)}</div>`; }
+      else if(it.t==='h'){ h+=`<div class="bubble a">${esc(it.text)}</div>`; }
+      else if(it.t==='li'){ h+=`<div class="bubble b">${esc(it.text)}</div>`; }
+      else { h+=`<div class="bubble">${esc(it.text)}</div>`; }
+    });
+    h+=`</div></div>`;
+  });
+  const prev=D.dialogs[i-1], next=D.dialogs[i+1];
+  h+=`<div class="lnav">
+    ${i>0?`<button data-dd="${i-1}"><span class="dir">← Önceki</span><span class="tt">${esc(prev.title.replace(/^VI\.\d+\s*—\s*/,''))}</span></button>`:'<button disabled><span class="dir">←</span><span class="tt">—</span></button>'}
+    ${next?`<button class="next" data-dd="${i+1}"><span class="dir">Sonraki →</span><span class="tt">${esc(next.title.replace(/^VI\.\d+\s*—\s*/,''))}</span></button>`:'<button class="next" disabled><span class="dir">→</span><span class="tt">—</span></button>'}
+  </div>`;
+  const c=document.getElementById('content'); c.innerHTML=h;
+  c.querySelectorAll('[data-dd]').forEach(b=>b.onclick=()=>openDia(+b.dataset.dd));
+  highlightNav(); window.scrollTo(0,0); closeNavMobile();
+}
+
+/* ============ SEARCH ============ */
+document.getElementById('search').addEventListener('input',e=>{
+  const q=normalize(e.target.value);
+  document.querySelectorAll('#nav .chap').forEach(ch=>{
+    let any=false;
+    ch.querySelectorAll('.topic-link').forEach(b=>{
+      const match=!q || normalize(b.textContent).includes(q);
+      b.parentElement.style.display=match?'':'none'; if(match)any=true;
+    });
+    ch.style.display=any?'':'none';
+    if(q&&any) ch.classList.add('open');
+  });
+});
+
+/* ============ MOBILE NAV ============ */
+function closeNavMobile(){ document.body.classList.remove('nav-open'); }
+document.getElementById('hamb').onclick=()=>document.body.classList.toggle('nav-open');
+document.getElementById('scrim').onclick=closeNavMobile;
+
+/* ============ KEYBOARD ============ */
+document.addEventListener('keydown',e=>{
+  if(e.target.matches('input,textarea')) return;
+  if(current&&current.type==='topic'){
+    const idx=TOPICS.findIndex(x=>x.id===current.id);
+    if(e.key==='ArrowRight'&&TOPICS[idx+1]) openTopic(TOPICS[idx+1].id);
+    if(e.key==='ArrowLeft'&&TOPICS[idx-1]) openTopic(TOPICS[idx-1].id);
+  }
+});
+
+/* ============ INIT ============ */
+buildNav(); updateProgress(); goHome();
+document.querySelector('.chap')?.classList.add('open');
+</script>
+</body>
+</html>
